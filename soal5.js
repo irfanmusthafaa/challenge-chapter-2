@@ -51,46 +51,50 @@ const getInfoPenjualan = (dataPenjualan) => {
   let totalKeuntungan = 0;
   let totalModal = 0;
 
-  dataPenjualan.map((value) => {
-    //total keuntungan
-    let keuntungan = (value.hargaJual - value.hargaBeli) * value.totalTerjual;
-    totalKeuntungan += keuntungan;
+  if (Array.isArray(dataPenjualan)) {
+    dataPenjualan.map((value) => {
+      //total keuntungan
+      let keuntungan = (value.hargaJual - value.hargaBeli) * value.totalTerjual;
+      totalKeuntungan += keuntungan;
 
-    //modal
-    modal = value.hargaBeli * value.totalTerjual;
-    totalModal += modal;
-  });
+      //modal
+      modal = value.hargaBeli * value.totalTerjual;
+      totalModal += modal;
+    });
 
-  //format rupiah
-  const totalKeuntunganRupiah = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  }).format(totalKeuntungan);
+    //format rupiah
+    const totalKeuntunganRupiah = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(totalKeuntungan);
 
-  const totalModalRupiah = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  }).format(totalModal);
+    const totalModalRupiah = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(totalModal);
 
-  //presentase keuntungan
-  const hitungPresentase = (totalKeuntungan / totalModal) * 100;
-  const presentaseKeuntungan = Math.round(hitungPresentase) + "%";
+    //presentase keuntungan
+    const hitungPresentase = (totalKeuntungan / totalModal) * 100;
+    const presentaseKeuntungan = Math.round(hitungPresentase) + "%";
 
-  //mencari total terjual terbanyak untuk menentukan produk terlaris dan penulis terlaris
-  const produkTerlaris = dataPenjualan.reduce((nilaiPertama, nilaiSetelahnya) => {
-    if (nilaiSetelahnya.totalTerjual > nilaiPertama.totalTerjual) {
-      return nilaiSetelahnya;
-    }
-    return nilaiPertama;
-  }, dataPenjualan[0]);
+    //mencari total terjual terbanyak untuk menentukan produk terlaris dan penulis terlaris
+    const produkTerlaris = dataPenjualan.reduce((nilaiPertama, nilaiSetelahnya) => {
+      if (nilaiSetelahnya.totalTerjual > nilaiPertama.totalTerjual) {
+        return nilaiSetelahnya;
+      }
+      return nilaiPertama;
+    }, dataPenjualan[0]);
 
-  return {
-    totalKeuntungan: totalKeuntunganRupiah,
-    totalModal: totalModalRupiah,
-    presentaseKeuntungan,
-    produkBukuTerlaris: produkTerlaris.namaProduk,
-    penulisTerlaris: produkTerlaris.penulis,
-  };
+    return {
+      totalKeuntungan: totalKeuntunganRupiah,
+      totalModal: totalModalRupiah,
+      presentaseKeuntungan,
+      produkBukuTerlaris: produkTerlaris.namaProduk,
+      penulisTerlaris: produkTerlaris.penulis,
+    };
+  } else {
+    return "Tipe data yang ada pada parameter wajib berupa array";
+  }
 };
 
 // getInfoPenjualan(dataPenjualanNovel);

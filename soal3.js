@@ -8,7 +8,8 @@ const getAngkaTerbesarKedua = (dataNumbers) => {
     return "Pastikan tipe data pada elemen array harus berupa number";
   }
 
-  const dataAngkaFix = [...new Set(dataNumbers)]; //hapus duplikat data yang sama
+  //hapus duplikat data yang sama
+  const dataAngkaFix = [...new Set(dataNumbers)];
 
   if (dataAngkaFix.length < 2) {
     return "Array setidaknya memiliki 2 elemen";

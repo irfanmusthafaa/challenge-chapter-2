@@ -26,10 +26,14 @@ const dataPenjualanPakAldi = [
 ];
 
 const getTotalPenjualan = (dataTerjual) => {
-  let total = dataTerjual.reduce((val, element) => {
-    return val + element.totalTerjual;
-  }, 0);
-  return `total terjual : ${total}`;
+  if (Array.isArray(dataTerjual)) {
+    let total = dataTerjual.reduce((val, element) => {
+      return val + element.totalTerjual;
+    }, 0);
+    return `total terjual : ${total}`;
+  } else {
+    return "Tipe data yang ada pada parameter wajib berupa array";
+  }
 };
 
 console.log(getTotalPenjualan(dataPenjualanPakAldi));
